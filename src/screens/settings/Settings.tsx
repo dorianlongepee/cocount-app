@@ -15,7 +15,7 @@ import { snackType } from "@/constants";
 import { updateUserInfos } from "@/api/user.api";
 
 export const Settings = () => {
-  const { user, login } = useContext(UserContext);
+  const { user, login, logout } = useContext(UserContext);
   const [formInputs, setFormInputs] = useState(cloneDeep(user));
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -49,6 +49,8 @@ export const Settings = () => {
     setLoading(true);
     try {
       updateUserInfos(user._id, formInputs);
+      const variant: VariantType = snackType.SUCCESS;
+      enqueueSnackbar("Informations mises à jour", { variant });
     } catch (e: any) {
       const variant: VariantType = snackType.ERROR;
       enqueueSnackbar(e.response.data.error, { variant });
@@ -126,9 +128,19 @@ export const Settings = () => {
           </LoadingButton>
         </Box>
         <Box sx={{ display: "flex", flexGrow: 1 }}></Box>
-        <Button variant="contained" sx={{ width: "100%" }}>
-          Se déconnecter
-        </Button>
+        <Box sx={{ display: "flex", gap: "1rem", flexDirection: "column" }}>
+          <Button variant="contained" sx={{ width: "100%" }} onClick={logout}>
+            Se déconnecter
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            sx={{ width: "100%" }}
+            onClick={logout}
+          >
+            Supprimer mon compte
+          </Button>
+        </Box>
       </Stack>
     </>
   );

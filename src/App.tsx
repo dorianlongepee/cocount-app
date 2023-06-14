@@ -5,11 +5,16 @@ import { Route, Routes } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 import { UserContext } from "./context/UserContext";
 import Home from "@/screens/home";
+import SnackbarCloseButton from "./components/SnackbarCloseButton";
 
 function App() {
   const { user } = useContext(UserContext);
   return (
-    <SnackbarProvider>
+    <SnackbarProvider
+      action={(snackbarKey) => (
+        <SnackbarCloseButton snackbarKey={snackbarKey} />
+      )}
+    >
       <Routes>
         {user._id !== "" ? (
           <Route path="/" element={<Home />}></Route>
