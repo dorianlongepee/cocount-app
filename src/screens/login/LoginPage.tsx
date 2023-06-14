@@ -2,7 +2,7 @@ import { Box, Container, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import React, { useContext, useState } from "react";
 import isEmail from "validator/lib/isEmail";
-import { loginApi } from "@/api/user.api";
+import { loginUser } from "@/api/user.api";
 import { enqueueSnackbar, VariantType } from "notistack";
 import { snackType } from "@/constants";
 import { UserContext } from "@/context/UserContext";
@@ -27,7 +27,7 @@ const LoginPage = () => {
 
   const logUser = () => {
     setLoading(true);
-    loginApi(email)
+    loginUser(email)
       .then((res) => {
         login(res);
       })

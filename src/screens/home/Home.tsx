@@ -38,6 +38,8 @@ const Home = () => {
         sx={{
           overflowY: "scroll",
           flexGrow: 1,
+          paddingTop: "1rem",
+          paddingBottom: "1rem",
         }}
       >
         {renderPage()}

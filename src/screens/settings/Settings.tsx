@@ -1,17 +1,72 @@
-import { Avatar, Box, Stack, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { UserContext } from "@/context/UserContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { isEqual, cloneDeep } from "lodash";
+import { LoadingButton } from "@mui/lab";
+import { VariantType, enqueueSnackbar } from "notistack";
+import { snackType } from "@/constants";
+import { updateUserInfos } from "@/api/user.api";
 
 export const Settings = () => {
-  const { user } = useContext(UserContext);
+  const { user, login } = useContext(UserContext);
+  const [formInputs, setFormInputs] = useState(cloneDeep(user));
+  const [isValid, setIsValid] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (
+      !isEqual(formInputs, user) &&
+      formInputs.firstname &&
+      formInputs.lastname &&
+      formInputs.email
+    ) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [formInputs, user]);
+
+  const displayName = `${user.firstname} ${user.lastname}`;
+
+  const handleInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { id, value } = e.target;
+    setFormInputs((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
+
+  const updateUser = async () => {
+    setLoading(true);
+    try {
+      updateUserInfos(user._id, formInputs);
+    } catch (e: any) {
+      const variant: VariantType = snackType.ERROR;
+      enqueueSnackbar(e.response.data.error, { variant });
+      return;
+    } finally {
+      setLoading(false);
+    }
+    login(formInputs);
+  };
+
   return (
     <>
       <Stack
         sx={{
-          margin: "1rem 0",
           display: "flex",
           flexDirection: "column",
           gap: "2rem",
+          height: "100%",
         }}
       >
         <Box
@@ -23,8 +78,9 @@ export const Settings = () => {
           }}
         >
           <Avatar />
-          <Typography>John Doe</Typography>
+          <Typography>{displayName}</Typography>
         </Box>
+
         <Box
           sx={{
             width: "100%",
@@ -37,14 +93,16 @@ export const Settings = () => {
             <TextField
               id="firstname"
               label="Prénom"
-              value={user.firstname}
+              onChange={(e) => handleInput(e)}
+              defaultValue={formInputs.firstname}
               variant="outlined"
               fullWidth
             />
             <TextField
               id="lastname"
               label="Nom"
-              value={user.lastname}
+              onChange={(e) => handleInput(e)}
+              value={formInputs.lastname}
               variant="outlined"
               fullWidth
             />
@@ -52,11 +110,25 @@ export const Settings = () => {
           <TextField
             id="email"
             label="Email"
-            value={user.email}
+            onChange={(e) => handleInput(e)}
+            value={formInputs.email}
             variant="outlined"
             fullWidth
           />
+          <LoadingButton
+            variant="contained"
+            disabled={!isValid}
+            onClick={updateUser}
+            sx={{ width: "100%" }}
+            loading={loading}
+          >
+            Modifier mes informations
+          </LoadingButton>
         </Box>
+        <Box sx={{ display: "flex", flexGrow: 1 }}></Box>
+        <Button variant="contained" sx={{ width: "100%" }}>
+          Se déconnecter
+        </Button>
       </Stack>
     </>
   );

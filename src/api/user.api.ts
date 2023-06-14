@@ -7,7 +7,12 @@ const userApi = axios.create({
 
 export const usersUrlEndpoint = "/user";
 
-export const loginApi = async (email: string) => {
+export const loginUser = async (email: string) => {
   const res = await userApi.post(`${usersUrlEndpoint}/login`, { email });
+  return res.data;
+};
+
+export const updateUserInfos = async (id: string, data: any) => {
+  const res = await userApi.put(`${usersUrlEndpoint}/${id}`, data);
   return res.data;
 };

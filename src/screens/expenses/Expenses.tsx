@@ -33,7 +33,6 @@ export const Expenses = () => {
         justifyContent="flex-start"
         align-items="stretch"
         spacing={2}
-        sx={{ padding: "1rem 0" }}
       >
         {expenses.map((expense: Expense) => (
           <ExpenseCard expense={expense} key={expense._id} />
