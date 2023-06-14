@@ -8,7 +8,13 @@ const fallbackUser: User = {
   email: "",
 };
 
-export const UserContext = createContext<UserContextType | null>(null);
+const defaultUserContext: UserContextType = {
+  user: fallbackUser,
+  login: () => {},
+  logout: () => {},
+};
+
+export const UserContext = createContext<UserContextType>(defaultUserContext);
 
 const UserProvider = ({ children }: any) => {
   const [user, setUser] = useState<User>(fallbackUser);

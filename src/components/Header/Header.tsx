@@ -1,21 +1,21 @@
-import { tabChoice } from "@/constants";
+import { TABCHOICE, TabChoice } from "@/constants";
 import { Toolbar, Typography } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 
 interface props {
-  tab: tabChoice;
+  tab: TabChoice;
 }
 
 export const Header = (p: props) => {
   const { tab } = p;
 
-  const getTabName = (tab: tabChoice) => {
+  const getTabName = (tab: TabChoice) => {
     switch (tab) {
-      case tabChoice.BALANCE:
+      case TABCHOICE.BALANCE:
         return "Balance";
-      case tabChoice.EXPENSES:
+      case TABCHOICE.EXPENSES:
         return "Dépenses";
-      case tabChoice.SETTINGS:
+      case TABCHOICE.SETTINGS:
         return "Paramètres";
     }
   };

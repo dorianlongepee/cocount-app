@@ -6,14 +6,13 @@ import { loginApi } from "@/api/user.api";
 import { enqueueSnackbar, VariantType } from "notistack";
 import { snackType } from "@/constants";
 import { UserContext } from "@/context/UserContext";
-import { UserContextType } from "@/types/user";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { login } = useContext(UserContext) as UserContextType;
+  const { login } = useContext(UserContext);
 
   const handleEmailChange = (e: React.FormEvent<HTMLDivElement>) => {
     const value = (e.target as HTMLInputElement).value;

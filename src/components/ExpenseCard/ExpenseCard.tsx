@@ -5,10 +5,8 @@ interface props {
   expense: Expense;
 }
 
-export const ExpenseCard = (p: props) => {
+export const ExpenseCard = ({ expense }: props) => {
   const theme = useTheme();
-  const { expense } = p;
-
   const getDate = () => {
     const date = new Date(expense.createdAt);
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;

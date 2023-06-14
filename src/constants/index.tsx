@@ -7,8 +7,10 @@ export enum snackType {
   ERROR = "error",
 }
 
-export enum tabChoice {
-  EXPENSES = "EXPENSES",
-  BALANCE = "BALANCE",
-  SETTINGS = "SETTINGS",
-}
+export const TABCHOICE = {
+  EXPENSES: "EXPENSES",
+  BALANCE: "BALANCE",
+  SETTINGS: "SETTINGS",
+} as const;
+
+export type TabChoice = typeof TABCHOICE[keyof typeof TABCHOICE];

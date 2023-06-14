@@ -1,9 +1,8 @@
-import { Stack } from "@mui/material";
+import { Box, Paper, Skeleton, Stack } from "@mui/material";
 import useSWR from "swr";
 import { baseUrl } from "@/constants";
 import { fetcher } from "@/api/fetcher";
 import { Expense } from "@/types/expense";
-import IsLoading from "@/components/IsLoading";
 import { ExpenseCard } from "@/components/ExpenseCard";
 
 export const Expenses = () => {
@@ -13,7 +12,19 @@ export const Expenses = () => {
     isLoading,
   } = useSWR(`${baseUrl}/expense`, fetcher);
   if (error) return <div>échec du chargement</div>;
-  if (isLoading) return <IsLoading />;
+  if (isLoading)
+    return (
+      <Paper variant="outlined" sx={{ padding: "1rem", marginTop: "1rem" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Skeleton variant="text" width="110px" />
+          <Skeleton variant="text" width="55px" />
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Skeleton variant="text" width="90px" />
+          <Skeleton variant="text" width="60px" />
+        </Box>
+      </Paper>
+    );
 
   return (
     <>

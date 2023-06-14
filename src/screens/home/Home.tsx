@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { tabChoice } from "@/constants";
+import { TABCHOICE, TabChoice } from "@/constants";
 import { Header } from "@/components/Header";
 import { Box, Container } from "@mui/material";
 import { TabBar } from "@/components/TabBar";
@@ -9,15 +9,15 @@ import { Settings } from "../settings";
 
 // Main component whenever user is logged in
 const Home = () => {
-  const [tab, setTab] = useState<tabChoice>(tabChoice.EXPENSES);
+  const [tab, setTab] = useState<TabChoice>(TABCHOICE.EXPENSES);
 
   const renderPage = () => {
     switch (tab) {
-      case tabChoice.EXPENSES:
+      case TABCHOICE.EXPENSES:
         return <Expenses />;
-      case tabChoice.BALANCE:
+      case TABCHOICE.BALANCE:
         return <Balance />;
-      case tabChoice.SETTINGS:
+      case TABCHOICE.SETTINGS:
         return <Settings />;
     }
   };
