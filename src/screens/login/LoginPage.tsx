@@ -1,4 +1,4 @@
-import { Box, Container, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import React, { useContext, useState } from "react";
 import isEmail from "validator/lib/isEmail";
@@ -6,11 +6,13 @@ import { loginUser } from "@/api/user.api";
 import { enqueueSnackbar, VariantType } from "notistack";
 import { snackType } from "@/constants";
 import { UserContext } from "@/context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const { login } = useContext(UserContext);
 
@@ -23,6 +25,10 @@ const LoginPage = () => {
     } else {
       setIsValid(false);
     }
+  };
+
+  const goToSignUp = () => {
+    navigate("/register");
   };
 
   const logUser = () => {
@@ -71,6 +77,9 @@ const LoginPage = () => {
         >
           Se connecter
         </LoadingButton>
+        <Button variant="text" sx={{ width: "100%" }} onClick={goToSignUp}>
+          Créer un compte
+        </Button>
       </Box>
     </Container>
   );

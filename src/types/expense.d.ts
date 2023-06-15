@@ -3,7 +3,7 @@ import { User } from "@/types/user";
 export type Expense = {
   _id: string;
   name: string;
-  category: string;
+  category: Category;
   amount: number;
 
   /*
@@ -21,6 +21,11 @@ export type Expense = {
    * Timestamp of the expense
    */
   createdAt: string;
+
+  /*
+   * Timestamp of the expense
+   */
+  updatedAt: string;
 
   refunded: boolean;
 };

@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, useTheme } from "@mui/material";
+import { Box, Card, Typography, useTheme } from "@mui/material";
 import { Expense } from "@/types/expense";
 
 interface props {
@@ -13,7 +13,7 @@ export const ExpenseCard = ({ expense }: props) => {
   };
 
   return (
-    <Paper variant="outlined" sx={{ padding: "1rem" }}>
+    <Card variant="outlined" sx={{ padding: "1rem", width: "100%" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography
           variant="subtitle1"
@@ -36,6 +36,6 @@ export const ExpenseCard = ({ expense }: props) => {
         </Typography>
         <Typography variant="body2">{getDate()}</Typography>
       </Box>
-    </Paper>
+    </Card>
   );
 };

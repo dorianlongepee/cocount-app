@@ -1,57 +1,91 @@
-import * as React from "react";
+import { useContext } from "react";
 import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import EuroIcon from "@mui/icons-material/Euro";
-import BalanceIcon from "@mui/icons-material/Balance";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { Typography } from "@mui/material";
-import { TABCHOICE, TabChoice } from "@/constants";
+import { Box, Fab, Skeleton, Toolbar, Typography } from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
+import AddIcon from "@mui/icons-material/Add";
+import { Expense } from "@/types/expense";
+import { getTotalAmount, getUserShares } from "@/utils/expenses.utils";
+import { UserContext } from "@/context/UserContext";
 
 interface props {
-  setTab: (tab: TabChoice) => void;
+  expenses: Expense[];
+  loadingExpenses: boolean;
 }
 
-export const TabBar = (p: props) => {
-  const { setTab } = p;
+export const TabBar = ({ expenses, loadingExpenses }: props) => {
+  const theme = useTheme();
+  const { user } = useContext(UserContext);
 
-  const tabsProps = [
-    {
-      icon: <EuroIcon />,
-      label: "Dépenses",
-      choice: TABCHOICE.EXPENSES,
-    },
-    {
-      icon: <BalanceIcon />,
-      label: "Balance",
-      choice: TABCHOICE.BALANCE,
-    },
-    {
-      icon: <SettingsIcon />,
-      label: "Paramètres",
-      choice: TABCHOICE.SETTINGS,
-    },
-  ];
+  const StyledFab = styled(Fab)({
+    position: "absolute",
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: "0 auto",
+  });
 
-  const renderTabs = () => {
-    return tabsProps.map((tab) => {
-      return (
-        <IconButton
-          color="inherit"
-          onClick={() => setTab(tab.choice)}
-          sx={{ width: "33%", flexDirection: "column", borderRadius: "8px" }}
-          key={tab.choice}
-        >
-          {tab.icon}
-          <Typography variant="overline">{tab.label}</Typography>
-        </IconButton>
-      );
-    });
+  const getUserTotal = () => {
+    if (loadingExpenses) return <Skeleton variant="text" width="55px" />;
+    const userShares = getUserShares(expenses, user._id);
+    return (
+      <Typography
+        variant="button"
+        component="p"
+        align="left"
+        sx={{ lineHeight: 1.5 }}
+      >
+        {userShares} €
+      </Typography>
+    );
+  };
+
+  const getTotal = () => {
+    if (loadingExpenses) return <Skeleton variant="text" width="55px" />;
+    const totalAmount = getTotalAmount(expenses);
+    return (
+      <Typography
+        variant="button"
+        component="p"
+        align="right"
+        sx={{ lineHeight: 1.5 }}
+      >
+        {totalAmount} €
+      </Typography>
+    );
   };
 
   return (
-    <AppBar position="static" component="footer">
-      <Toolbar sx={{ padding: "6px 0" }}>{renderTabs()}</Toolbar>
+    <AppBar
+      position="static"
+      component="footer"
+      sx={{
+        backgroundColor: `${theme.palette.grey[800]}`,
+      }}
+    >
+      <Toolbar>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Typography variant="overline" component="p" sx={{ lineHeight: 1.5 }}>
+            Mon coût total
+          </Typography>
+          {getUserTotal()}
+        </Box>
+        <StyledFab color="primary" aria-label="add">
+          <AddIcon />
+        </StyledFab>
+        <Box sx={{ flexGrow: 1 }} />
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Typography
+            variant="overline"
+            component="p"
+            align="right"
+            sx={{ lineHeight: 1.5 }}
+          >
+            Total dépenses
+          </Typography>
+          {getTotal()}
+        </Box>
+      </Toolbar>
     </AppBar>
   );
 };

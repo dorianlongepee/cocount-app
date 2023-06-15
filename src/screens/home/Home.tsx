@@ -1,26 +1,51 @@
 import { useState } from "react";
-import { TABCHOICE, TabChoice } from "@/constants";
-import { Header } from "@/components/Header";
-import { Box, Container } from "@mui/material";
-import { TabBar } from "@/components/TabBar";
+import {
+  AppBar,
+  Box,
+  Container,
+  Tab,
+  Tabs,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { Expenses } from "../expenses";
 import { Balance } from "../balance";
 import { Settings } from "../settings";
+import TabPanel from "@/components/TabPanel";
+import {
+  BalanceOutlined,
+  SettingsOutlined,
+  ReceiptOutlined,
+} from "@mui/icons-material";
+import { TabBar } from "@/components/TabBar";
+import { useExpenses, useUsers } from "@/api/fetcher";
+import { Expense } from "@/types/expense";
+
+const a11yProps = (index: number) => {
+  return {
+    id: `full-width-tab-${index}`,
+    "aria-controls": `full-width-tabpanel-${index}`,
+  };
+};
 
 // Main component whenever user is logged in
 const Home = () => {
-  const [tab, setTab] = useState<TabChoice>(TABCHOICE.EXPENSES);
+  const {
+    data,
+    error,
+    isLoading,
+  }: { data: Expense[]; error: any; isLoading: boolean } = useExpenses();
 
-  const renderPage = () => {
-    switch (tab) {
-      case TABCHOICE.EXPENSES:
-        return <Expenses />;
-      case TABCHOICE.BALANCE:
-        return <Balance />;
-      case TABCHOICE.SETTINGS:
-        return <Settings />;
-    }
+  const { data: users } = useUsers();
+
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
   };
+
+  const hasTabBar =
+    value === 0 ? <TabBar expenses={data} loadingExpenses={isLoading} /> : null;
 
   return (
     <Box
@@ -29,22 +54,58 @@ const Home = () => {
         display: "flex",
         flexDirection: "column",
         height: "100vh",
-        overflowX: "hidden",
+        overflow: "hidden",
       }}
     >
-      <Header tab={tab} />
+      <AppBar position="static" elevation={0}>
+        <Toolbar>
+          <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
+            Co'count
+          </Typography>
+        </Toolbar>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor="secondary"
+          textColor="inherit"
+          variant="fullWidth"
+          aria-label="full width tabs example"
+        >
+          <Tab label="Dépenses" icon={<ReceiptOutlined />} {...a11yProps(0)} />
+          <Tab label="Balance" icon={<BalanceOutlined />} {...a11yProps(1)} />
+          <Tab
+            label="Paramètres"
+            icon={<SettingsOutlined />}
+            {...a11yProps(2)}
+          />
+        </Tabs>
+      </AppBar>
+
       <Container
-        maxWidth="xl"
+        maxWidth={false}
         sx={{
-          overflowY: "scroll",
           flexGrow: 1,
-          paddingTop: "1rem",
-          paddingBottom: "1rem",
+          overflow: "scroll",
+          paddingY: "1rem",
         }}
       >
-        {renderPage()}
+        <TabPanel value={value} index={0}>
+          <Expenses
+            users={users}
+            expenses={data}
+            errorExpenses={error}
+            loadingExpenses={isLoading}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <Balance users={users} expenses={data} />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <Settings />
+        </TabPanel>
       </Container>
-      <TabBar setTab={setTab} />
+
+      {hasTabBar}
     </Box>
   );
 };
