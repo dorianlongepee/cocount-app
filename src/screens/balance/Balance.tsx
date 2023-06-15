@@ -1,5 +1,6 @@
 import { Expense } from "@/types/expense";
 import { User } from "@/types/user";
+import { getUserShares } from "@/utils/expenses.utils";
 import { Box, Chip, Paper, Stack, Typography, useTheme } from "@mui/material";
 
 interface props {
@@ -9,6 +10,15 @@ interface props {
 
 export const Balance = ({ users, expenses }: props) => {
   const theme = useTheme();
+
+  const getBalance = (user: User) => {
+    const balance = getUserShares(expenses, user._id);
+    if (balance > 0) {
+      return <Chip label={`Doit ${balance}€`} color="error" />;
+    } else {
+      return <Chip label={`N'a pas de dette`} color="success" />;
+    }
+  };
 
   return (
     <>
@@ -27,7 +37,7 @@ export const Balance = ({ users, expenses }: props) => {
               {user.firstname} {user.lastname}
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
-            <Chip color="error" label="-100€" />
+            {getBalance(user)}
           </Paper>
         ))}
       </Stack>

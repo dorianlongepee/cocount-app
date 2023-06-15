@@ -1,5 +1,6 @@
 import { Expense } from "@/types/expense";
 
+// Various utils, may need a refactor to put these in the backend
 export const getTotalAmount = (expenses: Expense[]) => {
   return expenses?.reduce((acc, expense) => {
     return acc + expense.amount;

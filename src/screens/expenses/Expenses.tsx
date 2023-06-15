@@ -47,7 +47,7 @@ const expenseFallback: Expense = {
 };
 
 interface props {
-  users : User[];
+  users: User[];
   expenses: Expense[];
   errorExpenses: any;
   loadingExpenses: boolean;
