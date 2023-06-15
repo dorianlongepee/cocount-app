@@ -18,6 +18,10 @@ export const updateUserInfos = async (id: string, data: any) => {
 };
 
 export const createUser = async (data: any) => {
-  const res = await userApi.post(`${usersUrlEndpoint}/signup`, data);
-  return res.data;
+  try {
+    const res = await userApi.post(`${usersUrlEndpoint}/signup`, data);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
 };

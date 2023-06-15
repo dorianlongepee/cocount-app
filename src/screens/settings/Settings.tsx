@@ -13,6 +13,7 @@ import { LoadingButton } from "@mui/lab";
 import { VariantType, enqueueSnackbar } from "notistack";
 import { snackType } from "@/constants";
 import { updateUserInfos } from "@/api/user.api";
+import { revalidate } from "@/api/fetcher";
 
 export const Settings = () => {
   const { user, login, logout } = useContext(UserContext);
@@ -48,7 +49,8 @@ export const Settings = () => {
   const updateUser = async () => {
     setLoading(true);
     try {
-      updateUserInfos(user._id, formInputs);
+      await updateUserInfos(user._id, formInputs);
+      revalidate("expenses");
       const variant: VariantType = snackType.SUCCESS;
       enqueueSnackbar("Informations mises à jour", { variant });
     } catch (e: any) {

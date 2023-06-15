@@ -44,7 +44,6 @@ export const CreateAccount = () => {
     setLoading(true);
     try {
       const res = await createUser(formInputs);
-      console.log(res);
       enqueueSnackbar("Utilisateur créé", { variant: "success" });
       login(res[0]);
       navigate("/");

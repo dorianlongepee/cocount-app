@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import { Box, Fab, Skeleton, Toolbar, Typography } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
@@ -6,6 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Expense } from "@/types/expense";
 import { getTotalAmount, getUserShares } from "@/utils/expenses.utils";
 import { UserContext } from "@/context/UserContext";
+import ExpenseDialog from "@/screens/expenseDialog";
 
 interface props {
   expenses: Expense[];
@@ -15,6 +16,7 @@ interface props {
 export const TabBar = ({ expenses, loadingExpenses }: props) => {
   const theme = useTheme();
   const { user } = useContext(UserContext);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
 
   const StyledFab = styled(Fab)({
     position: "absolute",
@@ -55,37 +57,55 @@ export const TabBar = ({ expenses, loadingExpenses }: props) => {
     );
   };
 
+  const openCreationDialog = () => {
+    setOpenCreateDialog(true);
+  };
+
   return (
-    <AppBar
-      position="static"
-      component="footer"
-      sx={{
-        backgroundColor: `${theme.palette.grey[800]}`,
-      }}
-    >
-      <Toolbar>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Typography variant="overline" component="p" sx={{ lineHeight: 1.5 }}>
-            Mon coût total
-          </Typography>
-          {getUserTotal()}
-        </Box>
-        <StyledFab color="primary" aria-label="add">
-          <AddIcon />
-        </StyledFab>
-        <Box sx={{ flexGrow: 1 }} />
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Typography
-            variant="overline"
-            component="p"
-            align="right"
-            sx={{ lineHeight: 1.5 }}
+    <>
+      <AppBar
+        position="static"
+        component="footer"
+        sx={{
+          backgroundColor: `${theme.palette.grey[800]}`,
+        }}
+      >
+        <Toolbar>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography
+              variant="overline"
+              component="p"
+              sx={{ lineHeight: 1.5 }}
+            >
+              Mon coût total
+            </Typography>
+            {getUserTotal()}
+          </Box>
+          <StyledFab
+            color="primary"
+            aria-label="add"
+            onClick={openCreationDialog}
           >
-            Total dépenses
-          </Typography>
-          {getTotal()}
-        </Box>
-      </Toolbar>
-    </AppBar>
+            <AddIcon />
+          </StyledFab>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography
+              variant="overline"
+              component="p"
+              align="right"
+              sx={{ lineHeight: 1.5 }}
+            >
+              Total dépenses
+            </Typography>
+            {getTotal()}
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <ExpenseDialog
+        openDialog={openCreateDialog}
+        setOpenDialog={setOpenCreateDialog}
+      />
+    </>
   );
 };

@@ -1,30 +1,14 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Paper,
-  Select,
-  Skeleton,
-  Stack,
-  TextField,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import { revalidate, useUsers } from "@/api/fetcher";
+import { Box, Button, Paper, Skeleton, Stack } from "@mui/material";
 import { Expense } from "@/types/expense";
 import { ExpenseCard } from "@/components/ExpenseCard";
 import { useState } from "react";
-import { User } from "@/types/user";
-import { enqueueSnackbar } from "notistack";
-import { delExpense } from "@/api/expenses.api";
+import ExpenseDialog from "../expenseDialog";
+
+interface props {
+  expenses: Expense[];
+  errorExpenses: any;
+  loadingExpenses: boolean;
+}
 
 const expenseFallback: Expense = {
   _id: "",
@@ -46,23 +30,13 @@ const expenseFallback: Expense = {
   refunded: false,
 };
 
-interface props {
-  users: User[];
-  expenses: Expense[];
-  errorExpenses: any;
-  loadingExpenses: boolean;
-}
-
 export const Expenses = ({
-  users,
   errorExpenses,
   loadingExpenses,
   expenses,
 }: props) => {
-  const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [formInputs, setFormInputs] = useState(expenseFallback);
+  const [expenseToOpen, setOpenedExpense] = useState(expenseFallback);
 
   if (errorExpenses) return <div>échec du chargement</div>;
   if (loadingExpenses)
@@ -79,40 +53,9 @@ export const Expenses = ({
       </Paper>
     );
 
-  const userOptions = users?.map((user: User) => (
-    <MenuItem key={user._id} value={user._id}>
-      {user.firstname}
-    </MenuItem>
-  ));
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleInput = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { id, value } = e.target;
-    setFormInputs((prevState) => ({
-      ...prevState,
-      [id]: value,
-    }));
-  };
-
   const openDialog = (expense: Expense) => {
-    setFormInputs(expense);
+    setOpenedExpense(expense);
     setOpen(true);
-  };
-
-  const deleteExpense = async () => {
-    try {
-      await delExpense(formInputs._id);
-      revalidate("expenses");
-      enqueueSnackbar("Dépense supprimée", { variant: "success" });
-      setOpen(false);
-    } catch (e: any) {
-      enqueueSnackbar(e.response.data.error, { variant: "error" });
-    }
   };
 
   return (
@@ -134,62 +77,11 @@ export const Expenses = ({
         ))}
       </Stack>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        fullScreen={fullScreen}
-        fullWidth={true}
-        maxWidth="sm"
-      >
-        <DialogTitle>Détails de la dépense</DialogTitle>
-        <DialogContent>
-          <Stack spacing={2} sx={{ paddingY: "1rem" }}>
-            <TextField
-              id="name"
-              label="Nom"
-              onChange={(e) => handleInput(e)}
-              defaultValue={formInputs.name}
-              variant="outlined"
-              fullWidth
-            />
-            <FormControl>
-              <InputLabel id="amount">Montant</InputLabel>
-              <OutlinedInput
-                id="amount"
-                label="Montant"
-                startAdornment={
-                  <InputAdornment position="start">$</InputAdornment>
-                }
-                onChange={(e) => handleInput(e)}
-                defaultValue={formInputs.amount}
-                fullWidth
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-              />
-            </FormControl>
-            <FormControl>
-              <InputLabel id="paidBy">Payé par</InputLabel>
-              <Select
-                label="Payé par"
-                labelId="selectPaidByLabel"
-                id="paidBy"
-                defaultValue={formInputs.paidBy._id}
-              >
-                {userOptions}
-              </Select>
-            </FormControl>
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={deleteExpense} color="error">
-            Supprimer
-          </Button>
-          <Box sx={{ flexGrow: 1 }}></Box>
-          <Button onClick={handleClose}>Annuler</Button>
-          <Button onClick={handleClose} disabled>
-            Modifier
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ExpenseDialog
+        expense={expenseToOpen}
+        openDialog={open}
+        setOpenDialog={setOpen}
+      />
     </>
   );
 };

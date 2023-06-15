@@ -1,15 +1,17 @@
+import { useData } from "@/api/fetcher";
 import { Expense } from "@/types/expense";
 import { User } from "@/types/user";
 import { getUserShares } from "@/utils/expenses.utils";
 import { Box, Chip, Paper, Stack, Typography, useTheme } from "@mui/material";
 
 interface props {
-  users: User[];
   expenses: Expense[];
 }
 
-export const Balance = ({ users, expenses }: props) => {
+export const Balance = ({ expenses }: props) => {
   const theme = useTheme();
+  const { data: users }: { data: User[]; isLoading: boolean } =
+    useData("users");
 
   const getBalance = (user: User) => {
     const balance = getUserShares(expenses, user._id);

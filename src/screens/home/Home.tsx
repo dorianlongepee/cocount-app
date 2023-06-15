@@ -18,7 +18,7 @@ import {
   ReceiptOutlined,
 } from "@mui/icons-material";
 import { TabBar } from "@/components/TabBar";
-import { useExpenses, useUsers } from "@/api/fetcher";
+import { useData } from "@/api/fetcher";
 import { Expense } from "@/types/expense";
 
 const a11yProps = (index: number) => {
@@ -34,9 +34,7 @@ const Home = () => {
     data,
     error,
     isLoading,
-  }: { data: Expense[]; error: any; isLoading: boolean } = useExpenses();
-
-  const { data: users } = useUsers();
+  }: { data: Expense[]; error: any; isLoading: boolean } = useData("expenses");
 
   const [value, setValue] = useState(0);
 
@@ -91,14 +89,13 @@ const Home = () => {
       >
         <TabPanel value={value} index={0}>
           <Expenses
-            users={users}
             expenses={data}
             errorExpenses={error}
             loadingExpenses={isLoading}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Balance users={users} expenses={data} />
+          <Balance expenses={data} />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Settings />

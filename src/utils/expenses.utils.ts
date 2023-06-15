@@ -17,7 +17,10 @@ export const getExpensesWhereUserIsBeneficiary = (
 };
 
 export const getUserShares = (expenses: Expense[], userId: string) => {
-  const expensesUser = getExpensesWhereUserIsBeneficiary(expenses, userId);
+  const expensesUser = getExpensesWhereUserIsBeneficiary(
+    expenses,
+    userId
+  ).filter((expense) => expense.paidBy._id !== userId);
   return expensesUser?.reduce((acc, expense) => {
     const myShare = expense.amount / expense.beneficiaries.length;
     return acc + myShare;

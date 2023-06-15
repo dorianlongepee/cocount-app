@@ -29,3 +29,23 @@ export type Expense = {
 
   refunded: boolean;
 };
+
+export const expenseFallback: Expense = {
+  _id: "",
+  name: "",
+  category: {
+    _id: "",
+    name: "",
+  },
+  amount: 0,
+  paidBy: {
+    _id: "",
+    firstname: "",
+    lastname: "",
+    email: "",
+  },
+  beneficiaries: [],
+  createdAt: "",
+  updatedAt: "",
+  refunded: false,
+};
