@@ -23,6 +23,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { set } from "lodash";
 import { enqueueSnackbar } from "notistack";
 import { useContext, useEffect, useState } from "react";
 
@@ -37,6 +38,13 @@ const EditExpense = ({ openDialog, setOpenDialog, expense }: props) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const { user } = useContext(UserContext);
+
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [paidBy, setPaidBy] = useState("");
+  const [beneficiaries, setBeneficiaries] = useState<User[]>([]);
+  const [isValid, setIsValid] = useState(false);
 
   // Fetching from API to populate the selects
   const { data: users }: { data: User[] } = useData("users");
@@ -54,44 +62,36 @@ const EditExpense = ({ openDialog, setOpenDialog, expense }: props) => {
     </MenuItem>
   ));
 
-  // useEffect(() => {
-  //   if (
-  //     name &&
-  //     amount &&
-  //     !Number.isNaN(amount) &&
-  //     paidBy &&
-  //     beneficiaries.length > 0
-  //   ) {
-  //     setIsValid(true);
-  //   } else {
-  //     setIsValid(false);
-  //   }
-  // }, [name, amount, paidBy, beneficiaries]);
-
   // Handlers
-  // const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setName(e.target.value);
-  // };
+  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
 
-  // const handleBeneficiariesChange = (
-  //   e: SelectChangeEvent<typeof beneficiaries>
-  // ) => {
-  //   setBeneficiaries(e.target.value as User[]);
-  // };
+  const handleBeneficiariesChange = (e: SelectChangeEvent<unknown>) => {
+    setBeneficiaries(e.target.value as User[]);
+  };
+
+  useEffect(() => {
+    setName(expense.name);
+    setCategory(expense.category ? expense.category._id : "");
+    setAmount(expense.amount);
+    setPaidBy(expense.paidBy._id);
+    setBeneficiaries(expense.beneficiaries);
+  }, [expense]);
 
   const handleSubmit = async () => {
     const newExpense = {
-      // expense.name,
-      // expense.category,
-      // expense.amount,
-      // expense.paidBy,
-      // expense.beneficiaries,
+      name,
+      category,
+      amount,
+      paidBy,
+      beneficiaries,
     };
 
     try {
       await updateExpense(expense._id, newExpense);
       revalidate("expenses");
-      enqueueSnackbar("Dépense mise à jour", { variant: "success" });
+      enqueueSnackbar("Dépense modifiée", { variant: "success" });
       setOpenDialog(false);
     } catch (e: any) {
       enqueueSnackbar(e.response.data, { variant: "error" });
@@ -128,7 +128,7 @@ const EditExpense = ({ openDialog, setOpenDialog, expense }: props) => {
             required
             id="name"
             label="Nom"
-            // onChange={handleChangeName}
+            onChange={handleChangeName}
             variant="outlined"
             defaultValue={expense.name}
             fullWidth
@@ -141,9 +141,9 @@ const EditExpense = ({ openDialog, setOpenDialog, expense }: props) => {
               labelId="selectCategoryLabel"
               id="category"
               defaultValue={expense.category ? expense.category._id : ""}
-              // onChange={(e: SelectChangeEvent<string>) =>
-              //   setCategory(e.target.value)
-              // }
+              onChange={(e: SelectChangeEvent<string>) =>
+                setCategory(e.target.value)
+              }
             >
               {categoryOptions}
             </Select>
@@ -155,7 +155,7 @@ const EditExpense = ({ openDialog, setOpenDialog, expense }: props) => {
               id="amount"
               label="Montant"
               defaultValue={expense.amount}
-              // onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e) => setAmount(Number(e.target.value))}
               startAdornment={
                 <InputAdornment position="start">€</InputAdornment>
               }
@@ -171,9 +171,9 @@ const EditExpense = ({ openDialog, setOpenDialog, expense }: props) => {
               labelId="selectPaidByLabel"
               id="paidBy"
               defaultValue={expense.paidBy._id}
-              // onChange={(e: SelectChangeEvent<string>) =>
-              //   setPaidBy(e.target.value)
-              // }
+              onChange={(e: SelectChangeEvent<string>) =>
+                setPaidBy(e.target.value)
+              }
             >
               {userOptions}
             </Select>
@@ -190,7 +190,7 @@ const EditExpense = ({ openDialog, setOpenDialog, expense }: props) => {
               defaultValue={expense.beneficiaries.map(
                 (beneficiary: User) => beneficiary._id
               )}
-              // onChange={handleBeneficiariesChange}
+              onChange={handleBeneficiariesChange}
             >
               {userOptions}
             </Select>

@@ -10,33 +10,13 @@ interface props {
   loadingExpenses: boolean;
 }
 
-const expenseFallback: Expense = {
-  _id: "",
-  name: "",
-  category: {
-    _id: "",
-    name: "",
-  },
-  amount: 0,
-  paidBy: {
-    _id: "",
-    firstname: "",
-    lastname: "",
-    email: "",
-  },
-  beneficiaries: [],
-  createdAt: "",
-  updatedAt: "",
-  refunded: false,
-};
-
 export const Expenses = ({
   errorExpenses,
   loadingExpenses,
   expenses,
 }: props) => {
   const [open, setOpen] = useState(false);
-  const [expenseToOpen, setOpenedExpense] = useState(expenseFallback);
+  const [expenseToOpen, setOpenedExpense] = useState<Expense | null>(null);
 
   if (errorExpenses) return <div>échec du chargement</div>;
   if (loadingExpenses)
@@ -76,11 +56,13 @@ export const Expenses = ({
           </Button>
         ))}
       </Stack>
-      <EditExpense
-        openDialog={open}
-        setOpenDialog={setOpen}
-        expense={expenseToOpen}
-      />
+      {expenseToOpen !== null && (
+        <EditExpense
+          openDialog={open}
+          setOpenDialog={setOpen}
+          expense={expenseToOpen}
+        />
+      )}
     </>
   );
 };

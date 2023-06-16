@@ -1,14 +1,5 @@
 import { useState } from "react";
-import {
-  AppBar,
-  Box,
-  Container,
-  Tab,
-  Tabs,
-  Toolbar,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { AppBar, Box, Container, Tab, Tabs, useTheme } from "@mui/material";
 import { Expenses } from "../expenses";
 import { Balance } from "../balance";
 import { Settings } from "../settings";
@@ -21,6 +12,7 @@ import {
 import { TabBar } from "@/components/TabBar";
 import { useData } from "@/api/fetcher";
 import { Expense } from "@/types/expense";
+import Header from "@/components/Header";
 
 const a11yProps = (index: number) => {
   return {
@@ -61,11 +53,7 @@ const Home = () => {
       }}
     >
       <AppBar position="static" elevation={0}>
-        <Toolbar>
-          <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
-            Co'count
-          </Typography>
-        </Toolbar>
+        <Header />
         <Tabs
           value={value}
           onChange={handleChange}

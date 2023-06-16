@@ -7,6 +7,7 @@ import { UserContext } from "./context/UserContext";
 import Home from "@/screens/home";
 import SnackbarCloseButton from "./components/SnackbarCloseButton";
 import { CreateAccount } from "./screens/createAccount";
+import CategoriesManagement from "./screens/categoriesManagement";
 
 function App() {
   const { user } = useContext(UserContext);
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<LoginPage />}></Route>
         )}
         <Route path="/register" element={<CreateAccount />}></Route>
+        <Route path="/categories" element={<CategoriesManagement />}></Route>
       </Routes>
     </SnackbarProvider>
   );

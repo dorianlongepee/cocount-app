@@ -23,26 +23,24 @@ export const Balance = ({ expenses }: props) => {
   };
 
   return (
-    <>
-      <Stack spacing={1}>
-        {users.map((user) => (
-          <Paper
-            key={user._id}
-            sx={{
-              padding: "1rem",
-              backgroundColor: theme.palette.grey[100],
-              display: "flex",
-            }}
-            elevation={0}
-          >
-            <Typography variant="subtitle1" component="h2">
-              {user.firstname} {user.lastname}
-            </Typography>
-            <Box sx={{ flexGrow: 1 }} />
-            {getBalance(user)}
-          </Paper>
-        ))}
-      </Stack>
-    </>
+    <Stack spacing={1}>
+      {users.map((user) => (
+        <Paper
+          key={user._id}
+          sx={{
+            padding: "1rem",
+            backgroundColor: theme.palette.grey[100],
+            display: "flex",
+          }}
+          elevation={0}
+        >
+          <Typography variant="subtitle1" component="h2">
+            {user.firstname} {user.lastname}
+          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          {getBalance(user)}
+        </Paper>
+      ))}
+    </Stack>
   );
 };
