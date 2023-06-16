@@ -16,11 +16,11 @@ git clone git@github.com:dorianlongepee/cocount-app.git && cd cocount-app
 npm i
 ```
 
-IMPORTANT : lancer le [serveur servant l'api](https://github.com/dorianlongepee/cocount-api) avant de continuer
-
 ```bash
 npm run start
 ```
+
+IMPORTANT : lancer le [serveur servant l'api](https://github.com/dorianlongepee/cocount-api)
 
 ## Fonctionnalités
 
