@@ -29,7 +29,7 @@ export const TabBar = ({ expenses, loadingExpenses }: props) => {
 
   const getUserTotal = () => {
     if (loadingExpenses) return <Skeleton variant="text" width="55px" />;
-    const userShares = getUserShares(expenses, user._id);
+    const userShares = getUserShares(expenses, user._id).toFixed(2);
     return (
       <Typography
         variant="button"

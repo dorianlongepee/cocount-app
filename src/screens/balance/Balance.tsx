@@ -14,8 +14,8 @@ export const Balance = ({ expenses }: props) => {
     useData("users");
 
   const getBalance = (user: User) => {
-    const balance = getUserShares(expenses, user._id);
-    if (balance > 0) {
+    const balance = getUserShares(expenses, user._id).toFixed(2);
+    if (Number(balance) > 0) {
       return <Chip label={`Doit ${balance}€`} color="error" />;
     } else {
       return <Chip label={`N'a pas de dette`} color="success" />;
