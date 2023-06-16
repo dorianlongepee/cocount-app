@@ -1,6 +1,5 @@
 import { delExpense, updateExpense } from "@/api/expenses.api";
 import { revalidate, useData } from "@/api/fetcher";
-import { UserContext } from "@/context/UserContext";
 import { Category } from "@/types/category";
 import { Expense } from "@/types/expense";
 import { User } from "@/types/user";
@@ -23,9 +22,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { set } from "lodash";
 import { enqueueSnackbar } from "notistack";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface props {
   openDialog: boolean;
@@ -37,14 +35,11 @@ const EditExpense = ({ openDialog, setOpenDialog, expense }: props) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const { user } = useContext(UserContext);
-
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState(0);
   const [paidBy, setPaidBy] = useState("");
   const [beneficiaries, setBeneficiaries] = useState<User[]>([]);
-  const [isValid, setIsValid] = useState(false);
 
   // Fetching from API to populate the selects
   const { data: users }: { data: User[] } = useData("users");
@@ -203,12 +198,7 @@ const EditExpense = ({ openDialog, setOpenDialog, expense }: props) => {
         </Button>
         <Box sx={{ flexGrow: 1 }}></Box>
         <Button onClick={handleClose}>Annuler</Button>
-        <Button
-          onClick={handleSubmit}
-          // disabled={!isValid}
-        >
-          Modifier
-        </Button>
+        <Button onClick={handleSubmit}>Modifier</Button>
       </DialogActions>
     </Dialog>
   );

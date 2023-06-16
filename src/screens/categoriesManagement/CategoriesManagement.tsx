@@ -1,6 +1,7 @@
 import { addCategory } from "@/api/categories.api";
 import { revalidate, useData } from "@/api/fetcher";
 import CategoryCard from "@/components/CategoryCard";
+import EditCategory from "@/components/EditCategory";
 import Header from "@/components/Header";
 import IsLoading from "@/components/IsLoading";
 import { Category } from "@/types/category";
@@ -19,7 +20,9 @@ import { useEffect, useState } from "react";
 
 export const CategoriesManagement = () => {
   const [openCreate, setOpenCreate] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [name, setName] = useState("");
+  const [categoryToOpen, setOpenedCategory] = useState<Category | null>(null);
   const [isValid, setIsValid] = useState(false);
 
   const handleOpenCreate = () => setOpenCreate(true);
@@ -53,11 +56,9 @@ export const CategoriesManagement = () => {
 
   const {
     data: categories,
-    error,
     isLoading,
-  }: { data: Category[]; error: any; isLoading: boolean } = useData(
-    "categories"
-  );
+  }: { data: Category[]; error: any; isLoading: boolean } =
+    useData("categories");
 
   if (isLoading) return <IsLoading />;
 
@@ -81,10 +82,16 @@ export const CategoriesManagement = () => {
             Ajouter une catégorie
           </Button>
           {categories.map((category) => (
-            <CategoryCard key={category._id} category={category} />
+            <CategoryCard
+              key={category._id}
+              category={category}
+              setOpenEdit={setOpenEdit}
+              setOpenedCategory={setOpenedCategory}
+            />
           ))}
         </Stack>
       </Container>
+
       <Dialog open={openCreate} onClose={handleCloseCreate}>
         <DialogTitle>Création d'une catégorie</DialogTitle>
         <DialogContent>
@@ -104,6 +111,14 @@ export const CategoriesManagement = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {categoryToOpen && (
+        <EditCategory
+          category={categoryToOpen}
+          open={openEdit}
+          setOpen={setOpenEdit}
+        />
+      )}
     </>
   );
 };

@@ -7,9 +7,11 @@ import { enqueueSnackbar } from "notistack";
 
 interface props {
   category: Category;
+  setOpenEdit: (open: boolean) => void;
+  setOpenedCategory: (category: Category) => void;
 }
 
-export const CategoryCard = ({ category }: props) => {
+export const CategoryCard = ({ category, setOpenEdit, setOpenedCategory }: props) => {
   const handleDelete = async () => {
     try {
       await delCategory(category._id);
@@ -18,6 +20,11 @@ export const CategoryCard = ({ category }: props) => {
     } catch (e: any) {
       enqueueSnackbar(e.response.data, { variant: "error" });
     }
+  };
+
+  const handleEdit = () => {
+    setOpenedCategory(category);
+    setOpenEdit(true);
   };
 
   return (
@@ -35,9 +42,9 @@ export const CategoryCard = ({ category }: props) => {
         {category.name}
       </Typography>
       <Box>
-        {/* <IconButton aria-label="edit">
+        <IconButton aria-label="edit" onClick={handleEdit}>
           <EditOutlined />
-        </IconButton> */}
+        </IconButton>
         <IconButton aria-label="delete" onClick={handleDelete}>
           <DeleteOutlined />
         </IconButton>

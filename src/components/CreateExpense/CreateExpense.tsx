@@ -164,7 +164,7 @@ export const CreateExpense = ({ openDialog, setOpenDialog }: props) => {
               label="Payé par"
               labelId="selectPaidByLabel"
               id="paidBy"
-              defaultValue=""
+              defaultValue={user._id}
               onChange={(e: SelectChangeEvent<string>) =>
                 setPaidBy(e.target.value)
               }
