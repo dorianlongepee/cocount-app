@@ -6,7 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Expense } from "@/types/expense";
 import { getTotalAmount, getUserShares } from "@/utils/expenses.utils";
 import { UserContext } from "@/context/UserContext";
-import ExpenseDialog from "@/screens/expenseDialog";
+import CreateExpense from "@/components/CreateExpense";
 
 interface props {
   expenses: Expense[];
@@ -102,7 +102,7 @@ export const TabBar = ({ expenses, loadingExpenses }: props) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <ExpenseDialog
+      <CreateExpense
         openDialog={openCreateDialog}
         setOpenDialog={setOpenCreateDialog}
       />

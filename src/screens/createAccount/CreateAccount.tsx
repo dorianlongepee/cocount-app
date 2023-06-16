@@ -45,7 +45,7 @@ export const CreateAccount = () => {
     try {
       const res = await createUser(formInputs);
       enqueueSnackbar("Utilisateur créé", { variant: "success" });
-      login(res[0]);
+      login(res);
       navigate("/");
     } catch (e: any) {
       enqueueSnackbar(e.response.data.error, { variant: "error" });

@@ -7,6 +7,7 @@ import {
   Tabs,
   Toolbar,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { Expenses } from "../expenses";
 import { Balance } from "../balance";
@@ -30,11 +31,15 @@ const a11yProps = (index: number) => {
 
 // Main component whenever user is logged in
 const Home = () => {
+  const theme = useTheme();
   const {
     data,
     error,
     isLoading,
   }: { data: Expense[]; error: any; isLoading: boolean } = useData("expenses");
+
+  useData("categories");
+  useData("users");
 
   const [value, setValue] = useState(0);
 
@@ -64,10 +69,15 @@ const Home = () => {
         <Tabs
           value={value}
           onChange={handleChange}
-          indicatorColor="secondary"
           textColor="inherit"
           variant="fullWidth"
           aria-label="full width tabs example"
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: theme.palette.primary.contrastText,
+              height: "2px",
+            },
+          }}
         >
           <Tab label="Dépenses" icon={<ReceiptOutlined />} {...a11yProps(0)} />
           <Tab label="Balance" icon={<BalanceOutlined />} {...a11yProps(1)} />

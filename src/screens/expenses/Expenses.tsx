@@ -2,7 +2,7 @@ import { Box, Button, Paper, Skeleton, Stack } from "@mui/material";
 import { Expense } from "@/types/expense";
 import { ExpenseCard } from "@/components/ExpenseCard";
 import { useState } from "react";
-import ExpenseDialog from "../expenseDialog";
+import EditExpense from "@/components/EditExpense/EditExpense";
 
 interface props {
   expenses: Expense[];
@@ -68,7 +68,7 @@ export const Expenses = ({
       >
         {expenses.map((expense: Expense) => (
           <Button
-            sx={{ padding: 0 }}
+            sx={{ padding: 0, textTransform: "none" }}
             key={expense._id}
             onClick={() => openDialog(expense)}
           >
@@ -76,11 +76,10 @@ export const Expenses = ({
           </Button>
         ))}
       </Stack>
-
-      <ExpenseDialog
-        expense={expenseToOpen}
+      <EditExpense
         openDialog={open}
         setOpenDialog={setOpen}
+        expense={expenseToOpen}
       />
     </>
   );

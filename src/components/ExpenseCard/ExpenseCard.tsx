@@ -32,7 +32,7 @@ export const ExpenseCard = ({ expense }: props) => {
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="body2">
-          Payé par {expense.paidBy.firstname}
+          payé par {expense.paidBy.firstname}
         </Typography>
         <Typography variant="body2">{getDate()}</Typography>
       </Box>
