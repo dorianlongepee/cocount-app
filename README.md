@@ -1,46 +1,42 @@
-# Getting Started with Create React App
+# Co'count
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Choix techniques
 
-## Available Scripts
+React + Typescript pour une bonne expérience SPA et étendre ma stack technique, ce projet fut le moment idéal pour utiliser ces dernières car d'habitude j'utilise Vue.
+J’utilise en plus SWR pour communiquer avec mon api, ce package permet de faire de la mise en cache et de l’affichage conditionnel lors du chargement des données et erreurs s'il y en a.
+Pour construire l’UI, j’ai utilisé MUI, cette librairie propose des composants Material simples d’utilisation.
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+```bash
+git clone url && cd cocount-app
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+npm i
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+IMPORTANT : lancer le [serveur servant l'api](https://github.com/dorianlongepee/cocount-api) avant de continuer
 
-### `npm test`
+```bash
+npm run start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Fonctionnalités
 
-### `npm run build`
+Consulter le fichier HOWTO.md pour plus d'informations sur l'utilisation de l'application
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [x] Login
+- [x] Créer un compte
+- [x] Afficher la liste des dépenses (ordre chronologique)
+- [x] Afficher le détail d'une dépense
+- [x] Ajouter une dépense
+- [x] Supprimer une dépense
+- [x] Modifier une dépense
+- [x] Balance des dépenses
+- [x] Afficher la liste des utilisateurs
+- [x] Modifier ses informations personnelles
+- [x] Afficher la liste des catégories
+- [x] Créer une catégorie
+- [x] Supprimer une catégorie
+- [x] Modifier une catégorie
