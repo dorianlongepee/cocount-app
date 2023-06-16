@@ -9,7 +9,7 @@ Pour construire l’UI, j’ai utilisé MUI, cette librairie propose des composa
 ## Installation
 
 ```bash
-git clone url && cd cocount-app
+git clone git@github.com:dorianlongepee/cocount-app.git && cd cocount-app
 ```
 
 ```
